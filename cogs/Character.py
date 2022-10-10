@@ -4,15 +4,13 @@ from discord.commands import Option, SlashCommandGroup
 import yaml, os
 import api.character
 from api.race import *
-from main import characters
+from main import characters, config
 
 class Character(commands.Cog):
     def __init__(self, bot:commands.Bot):
         self.bot = bot
 
     cmd = SlashCommandGroup("character", "Commands for character management!")
-
-    config = yaml.safe_load(open("config.yml"))
 
     Race_ids = []
     for filename in os.listdir('./database/Races'):
@@ -34,7 +32,6 @@ class Character(commands.Cog):
         character = api.character.Character(ctx.author.id)
         await ctx.respond(f"Character {character.name} succesfully loaded.")
         characters.add_character(character)
-        print(characters.get_characters_by_names())
         
 
     @cmd.command(
@@ -48,8 +45,6 @@ class Character(commands.Cog):
     sexe: Option(str, "Sexe", choices=["male", "female"], required=True),
     race_id: Option(str, "Race", choices=Race_ids, required=True),
     classe_id: Option(str, "Classe", choices=Classe_ids, required=True)):
-        await ctx.respond("template command")
-
         data = {
             'name': name,
             'age': age,
@@ -67,6 +62,7 @@ class Character(commands.Cog):
         else:
             with open(f"database/characters/{ctx.author.id}.yml", "w") as f:
                 yaml.dump(data, f, default_flow_style=False)
+            await ctx.respond("Character created !")
 
     
 

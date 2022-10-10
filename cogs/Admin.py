@@ -1,20 +1,19 @@
 import discord
 from discord.ext import commands
+from discord.commands import SlashCommandGroup
 import yaml
+from main import config
 
 class Admin(commands.Cog):
     def __init__(self, bot:commands.Bot):
         self.bot = bot
 
-    config = yaml.safe_load(open("config.yml"))
+    cmd = SlashCommandGroup("admins", "Commands for server management!")  
 
-    @commands.slash_command(guild_ids=config.get("guild_ids"),
+    @cmd.command(guild_ids=config.get("guild_ids"),
                     name = "set_admin",
                     usage="<usage>",
                     description = "description")
-    @commands.guild_only()
-    @commands.has_permissions(administrator=True)
-    @commands.cooldown(1, 2, commands.BucketType.member)
     async def set_admin(self, ctx, role : discord.Role = None):
         config = yaml.safe_load(open("config.yml"))
         
@@ -34,12 +33,10 @@ class Admin(commands.Cog):
                 print("config saved")
 
 
-    @commands.slash_command(guild_ids = config.get("guild_ids"),
+    @cmd.command(guild_ids = config.get("guild_ids"),
                     name = "set_mod",
                     usage="<usage>",
                     description = "description")
-    @commands.guild_only()
-    @commands.has_permissions(administrator=True)
     async def set_mod(self, ctx, role : discord.Role = None):
         config = yaml.safe_load(open("config.yml"))
         
