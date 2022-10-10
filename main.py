@@ -4,6 +4,7 @@ from discord.ext import commands
 import os
 import logging
 import volaris
+from api.characters import Characters
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -19,6 +20,7 @@ client = commands.Bot(
     command_prefix=config["prefix"]
 )
 
+characters = Characters()
 @client.event
 async def on_ready():
     glist = []
@@ -38,11 +40,11 @@ async def on_ready():
     print(f"logged in as {client.user}")
 
 
-
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         print(filename)
         client.load_extension(f'cogs.{filename[:-3]}')
+
 
 
 client.run(token)

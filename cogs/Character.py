@@ -4,6 +4,7 @@ from discord.commands import Option, SlashCommandGroup
 import yaml, os
 import api.character
 from api.race import *
+from main import characters
 
 class Character(commands.Cog):
     def __init__(self, bot:commands.Bot):
@@ -30,8 +31,10 @@ class Character(commands.Cog):
                     usage="",
                     description = "description")
     async def load(self, ctx):
-        charac = api.character.Character(ctx.author.id)
-        await ctx.respond(f"Character {charac.name} succesfully loaded.")
+        character = api.character.Character(ctx.author.id)
+        await ctx.respond(f"Character {character.name} succesfully loaded.")
+        characters.add_character(character)
+        print(characters.get_characters_by_names())
         
 
     @cmd.command(
