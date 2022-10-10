@@ -1,4 +1,5 @@
-       
+import yaml
+
 class Race():
     def __init__(self, id):
         self.id = id

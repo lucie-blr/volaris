@@ -1,16 +1,15 @@
 import discord
 from discord.ext import commands
-from discord.commands import Option
+from discord.commands import Option, SlashCommandGroup
 import yaml, os
-from api.character import *
+import api.character
 from api.race import *
-
-
-
 
 class Character(commands.Cog):
     def __init__(self, bot:commands.Bot):
         self.bot = bot
+
+    cmd = SlashCommandGroup("character", "Commands for character management!")
 
     config = yaml.safe_load(open("config.yml"))
 
@@ -25,16 +24,22 @@ class Character(commands.Cog):
             print(filename)
             Classe_ids.append(filename[:-4])
             
-
-    @commands.slash_command(
+    @cmd.command(
                     guild_ids = config.get("guild_ids"),
-                    name = "create_character",
+                    name = "load",
+                    usage="",
+                    description = "description")
+    async def load(self, ctx):
+        charac = api.character.Character(ctx.author.id)
+        await ctx.respond(f"Character {charac.name} succesfully loaded.")
+        
+
+    @cmd.command(
+                    guild_ids = config.get("guild_ids"),
+                    name = "create",
                     usage="<name> <>",
                     description = "description")
-    @commands.guild_only()
-    @commands.has_permissions()
-    @commands.cooldown(1, 2, commands.BucketType.member)
-    async def create_character(self, ctx, 
+    async def create(self, ctx, 
     name:str, 
     age:int, 
     sexe: Option(str, "Sexe", choices=["male", "female"], required=True),
@@ -54,36 +59,13 @@ class Character(commands.Cog):
             'zone': 'spawn',
             'stats': 00}
 
-        
-        character_id = "00"
-        
-        try:
-            l = []
-            for filename in os.listdir(f"database/characters/{ctx.author.id}"):
-                l.append(filename[:-4])
-            if len(l) >= 3:
-                await ctx.send("Le joueur a atteint le nomber maximum de personnage")
-                return
-            else:
-                if not "A" in l:
-                    character_id = "A"
-                    
-                elif not "B" in l:
-                    character_id = "B"
-                    
-                elif not "C" in l:
-                    character_id = "C"
-                    
-            
-            
-        except FileNotFoundError:
-            os.mkdir(f"database/characters/{ctx.author.id}")
-            character_id = "01"
-        
-        with open(f"database/characters/{ctx.author.id}/{character_id}.yml", "w") as f:
-            yaml.dump(data, f, default_flow_style=False)
+        if os.path.exists(f"./database/characters/{ctx.author.id}.yml"):
+            await ctx.respond("You already got a character !")
+        else:
+            with open(f"database/characters/{ctx.author.id}.yml", "w") as f:
+                yaml.dump(data, f, default_flow_style=False)
 
-
+    
 
 def setup(bot:commands.Bot):
         bot.add_cog(Character(bot))

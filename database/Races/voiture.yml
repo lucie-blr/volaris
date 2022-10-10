@@ -1,0 +1,7 @@
+name: Voiture
+bonus:
+  oeuf: 4
+  poulet: 1
+competence: voiture
+average_age: 15
+average_stats: voiture 

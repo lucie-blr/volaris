@@ -1,14 +1,15 @@
 from api.race import *
+import yaml
 
 class Character():
     """The characters are the entity players play.
     
     The class of a character register all is data."""
-    def __init__(self, pl_id, id):
+    def __init__(self, pl_id):
         """At the creation of a character, he get his data by the information in the database"""
-        self.character_data = yaml.safe_load(open(f"./database/characters/{pl_id}/{id}.yml"))
+        self.character_data = yaml.safe_load(open(f"./database/characters/{pl_id}.yml"))
 
-        self.id = pl_id + id
+        self.id = pl_id
 
         self.player_id = pl_id
 

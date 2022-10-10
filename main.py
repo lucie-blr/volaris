@@ -37,8 +37,6 @@ async def on_ready():
 
     print(f"logged in as {client.user}")
 
-    oeuf = volaris.Character("test")
-    print(oeuf.race.name)
 
 
 for filename in os.listdir('./cogs'):
