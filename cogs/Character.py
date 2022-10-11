@@ -10,7 +10,8 @@ class Character(commands.Cog):
     def __init__(self, bot:commands.Bot):
         self.bot = bot
 
-    cmd = SlashCommandGroup("character", "Commands for character management!")
+    cmd = SlashCommandGroup("character", "Commands for character!")
+    management = cmd.create_subgroup("management", "Commands for characters management.")
 
     Race_ids = []
     for filename in os.listdir('./database/Races'):
@@ -28,7 +29,7 @@ class Character(commands.Cog):
             print(filename)
             Faction_ids.append(filename[:-4])
             
-    @cmd.command(   guild_ids = config.get("guild_ids"),
+    @management.command(   guild_ids = config.get("guild_ids"),
                     name = "get_loaded",
                     usage = "",
                     description = "description")
@@ -59,7 +60,7 @@ class Character(commands.Cog):
     age:int, 
     sexe: Option(str, "Sexe", choices=["male", "female"], required=True),
     race_id: Option(str, "Race", choices=Race_ids, required=True),
-    classe_id: Option(str, "Classe", choices=Classe_ids, required=True)
+    classe_id: Option(str, "Classe", choices=Classe_ids, required=True),    
     faction_id: Option(str, "Faction", choices=Faction_ids, required=True)):
         data = {
             'name': name,
@@ -74,14 +75,14 @@ class Character(commands.Cog):
             'hp': 10,
             'zone': 'spawn',
             'team': None,
-            'stats': 00}
+            'atk': 5}
 
         if os.path.exists(f"./database/characters/{ctx.author.id}.yml"):
             await ctx.respond("You already got a character !")
         else:
             with open(f"database/characters/{ctx.author.id}.yml", "w") as f:
                 yaml.dump(data, f, default_flow_style=False)
-            await ctx.respond("Character created !")
+            await ctx.respond("Character created !")    
 
     
 

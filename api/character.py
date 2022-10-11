@@ -28,11 +28,11 @@ class Character():
         self.classe = self.character_data.get("classe")
         self.classe_2 = self.character_data.get("classe_2")
 
-        self.stats = self.character_data.get("stats")
-
+        #Statistiques
         self.level = self.character_data.get("level")
         self.xp = self.character_data.get("xp")
         self.hp = self.character_data.get("hp")
+        self.atk = self.character_data.get("atk")
 
         self.zone = self.character_data.get("zone")
 
