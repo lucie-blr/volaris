@@ -13,6 +13,7 @@ class Race():
         self.average_stats = self.race_data["average_stats"]
 
     def save(self):
+        """Save the data of the race"""
         self.race_data["name"] = self.name
         self.race_data["bonus"] = self.bonus
         self.race_data["competence"] = self.competence

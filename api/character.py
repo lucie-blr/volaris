@@ -17,13 +17,16 @@ class Character():
         self.age = self.character_data.get("age")
         self.sexe = self.character_data.get("sexe")
 
-        #change to the race data
+        self.faction_id = self.character_data.get("faction_id")
+
+        #charge the race data
         self.race_id = self.character_data.get("race")
         self.race = Race(self.character_data.get("race"))
 
-        #change to the classe data
+        #charge the classe data
         self.classe_id = self.character_data.get("classe")
         self.classe = self.character_data.get("classe")
+        self.classe_2 = self.character_data.get("classe_2")
 
         self.stats = self.character_data.get("stats")
 
@@ -33,8 +36,10 @@ class Character():
 
         self.zone = self.character_data.get("zone")
 
+        self.team = self.character_data.get("team")
+
     def save(self):
-        """He save all his data in the database"""
+        """Save the data of the character"""
         self.character_data["name"] = self.name
         self.character_data["age"] = self.age
         self.character_data["sexe"] = self.sexe
